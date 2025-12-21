@@ -15,9 +15,15 @@ app.use("/api", productRoutes);
 // Mount sale routes
 app.use("/api", saleRoutes);
 
+app.get("/", (req, res) => {
+  res.send("claremart API endpoint is live")
+})
+
 const startAppServer = async () => {
     try {
         await connectdb();
+        
+        
 
         app.listen(PORT, () => {
             console.log(`App server is listening on port ${PORT} at http://localhost:${PORT}`);
