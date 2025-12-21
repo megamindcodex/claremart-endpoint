@@ -4,15 +4,22 @@ import { Product } from "../models/product.model.js"
 
 export const createProduct = async (productData) => {
     try {
-        const { category, name, sku, price, taxable, quantity } = productData
+        const { category, name, sku, price, quantity, taxable } = productData
+        
+        const productExist = await Product.exists({sku: sku})
+        console.log(productExist)
+        if(productExist) {
+          return {success: false, message: "Product already in stock"}
+          } 
+        
 
         const newProduct = {
             category: category,
             name: name,
             sku: sku,
             price: price,
-            isTaxable: taxable,
-            stockQuantity: quantity
+            stockQuantity: quantity,
+            isTaxable: taxable
         }
 
         const result = await Product.create(newProduct)

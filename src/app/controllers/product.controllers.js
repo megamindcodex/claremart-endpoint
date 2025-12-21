@@ -9,7 +9,10 @@ export const createProduct_controller = async (req, res) => {
     try {
         const productData = req.body
         const result = await createProduct(productData)
-
+        
+        if(!result.success) {
+          return res.status(400).json({message: result.message})
+        }
 
         res.status(201).json({ message: "Product created successfully", product: result.data })
 
