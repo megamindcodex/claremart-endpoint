@@ -1,0 +1,29 @@
+{
+  "name": "claremart-endpoint",
+  "version": "1.0.0",
+  "description": "demo pos checkout system API endpoint",
+  "homepage": "https://github.com/megamindcodex/claremart-endpoint#readme",
+  "bugs": {
+    "url": "https://github.com/megamindcodex/claremart-endpoint/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/megamindcodex/claremart-endpoint.git"
+  },
+  "license": "ISC",
+  "author": "megamind",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "mongoose": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  }
+}
