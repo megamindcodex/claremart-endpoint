@@ -32,19 +32,55 @@ export const createProduct = async (productData) => {
     }
 }
 
+export const addBulkProduct = async (bulkProductsToAdd) => {
+  try {
+    //console.log(bulkProductsToAdd)
+    const result = await Product.insertMany(bulkProductsToAdd)
+    console.log(result)
+    
+    return {success: true, message: "bulk products added successfully", data: result}
+  }catch (err) {
+    console.error("Error adding bulk products", err)
+    throw err
+  }
+}
 
 
-export const incStockQuantity = async (sku, quantity) => { // 'inc' stands for increment
+export const fetchAllProductsInStock = async () => {
+  try {
+    const products = await Product.find({
+      stockQuantity: { $gt: 0 }
+    }, {name: 1, sku: 1, price: 1, stockQuantity: 1})
+ 
+    if (products.length === 0) {
+      return {
+        success: false,
+        message: "No products in stock",
+        data: []
+      }
+    }
+
+    return {
+      success: true,
+      message: "Products found",
+      data: products
+    }
+  } catch (error) {
+    console.error("Fetch all products error", error)
+    throw error
+  }
+}
+
+
+export const changStockQuantity = async (sku, quantity) => { // 'inc' stands for increment
     try {
-        const product = await Product.findOne({ sku: sku })
-
-        if (!product) {
-            return { success: false, message: "Product not found" }
+        const result = await Product.updateOne({sku: sku}, { $set: {stockQuantity: quantity}})
+        
+        if(result.matchedCount === 0){
+          return {success: false, message: "product not found"}
         }
-
-        product.stockQuantity = quantity
-        await product.save()
-
+        
+       
         return { success: true, message: "Stock quantity updated successfully", data: product }
     } catch (err) {
         console.error("add stock quantity error: ", err)
@@ -53,17 +89,21 @@ export const incStockQuantity = async (sku, quantity) => { // 'inc' stands for i
 }
 
 
-// export const fetchProduct = async (sku) => {
-//     try {
-//         const product = await Product.findOne({ sku: sku })
 
-//         if (!product) {
-//             return { success: false, message: "Product not found" }
-//         }
-
-//         return { success: true, message: "Product fetched successfully", data: product }
-//     } catch (err) {
-//         console.error("fetch product error: ", err)
-//         throw err
-//     }
-// }
+export const getProduct = async (sku) => {
+  try {
+    const product = await Product.findOne({sku})
+    
+    if(!product) {
+      console.log("product not found")
+      return {success: true, message: "product not found"}
+    }
+    
+    //console.log("product sku: ", product)
+    
+    return {success: true, message: "product fetched successfully", data: product}
+  }catch(err) {
+    console.error("fetch product Error: ", err)
+    throw err
+  }
+}

@@ -1,4 +1,4 @@
-import { initiateSale, fetchSaleTransaction, addItemToSale } from "../services/sale-services.js";
+import { initiateSale, fetchSaleTransaction, addItemToSaleTransaction, decrementItemFromSale, removeItemFromSale, clearSaleItems } from "../services/sale-services.js";
 
 
 
@@ -36,11 +36,12 @@ export const fetchSaleTransaction_controller = async (req, res) => {
 }
 
 
-export const addItemToSale_controller = async (req, res) => {
+export const addItemToSaleTransaction_controller = async (req, res) => {
     try {
         const { saleId } = req.params
         const { sku } = req.body
-        const result = await addItemToSale(saleId, sku)
+        const result = 
+        await addItemToSaleTransaction(saleId, sku)
 
         res.status(200).json({ message: result.message, sale: result.sale })
 
@@ -51,4 +52,59 @@ export const addItemToSale_controller = async (req, res) => {
             status === 500 ? "Internal server error" : err.message
         res.status(status).json({ message: message })
     }
+}
+
+export const decrementItemFromSale_controller = async (req, res) => {
+  try{
+    console.log("req body: ", req.body)
+    const { saleId } = req.params
+    const { sku } = req.body
+    
+    const result = await decrementItemFromSale(saleId, sku)
+    
+    res.status(200).json({message: result.message})
+    
+  }catch(err) {
+    console.error("add item to sale controller error: ", err)
+        const status = err.statusCode || 500
+        const message =
+        status === 500 ? "Internal server error" :
+        err.message
+        res.status(status).json({ message: message })
+  }
+  }
+  
+  export const removeItemFromSale_controller = async (req, res) => {
+    try {
+      const {saleId} = req.params
+      const {sku} = req.body
+      
+      const result = await removeItemFromSale(saleId, sku)
+      
+      res.status(200).json({message: result.message})
+    }catch(err) {
+      console.error("remove item from sale controller error: ", err)
+        const status = err.statusCode || 500
+        const message =
+        status === 500 ? "Internal server error" :
+        err.message
+        res.status(status).json({ message: message })
+    }
+  }
+
+
+
+export const clearSaleItems_controller = async (req, res) => { 
+  try {
+    const {saleId} = req.params
+    
+    const result = await clearSaleItems(saleId)
+    
+    res.status(200).json({message: result.message})
+  }catch(err) {
+    console.error("clear sale items controller error: ", err)
+    const status = err.statusCode || 500
+    const message = status === 500 ? "Internal server error" : err.message
+    res.status(status).json({message})
+  }
 }

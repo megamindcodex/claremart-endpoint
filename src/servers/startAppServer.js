@@ -10,10 +10,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json())
 
 // Mount product routes
-app.use("/api", productRoutes);
+app.use("/product", productRoutes);
 
 // Mount sale routes
-app.use("/api", saleRoutes);
+app.use("/sale", saleRoutes);
 
 app.get("/", (req, res) => {
   res.send("claremart API endpoint is live")
