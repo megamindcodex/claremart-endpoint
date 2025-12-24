@@ -4,42 +4,58 @@ import { Product } from "../models/product.model.js";
 
 
 export const initiateSale = async () => {
-    try {
+  try {
 
-        const newSale = {
-            status: "OPEN",
-            items: [],
-            subtotal: 0,
-            tax: 0,
-            total: 0,
-            closedAt: null,
-        }
-
-        const sale = await Sale.create(newSale);
-        console.log("New sale initiated:", sale);
-
-        return { success: true, message: "new sale initiated", data: sale };
-    } catch (err) {
-        console.error("initiateSale error:", err);
-        throw err
+    const newSale = {
+      status: "OPEN",
+      items: [],
+      subtotal: 0,
+      tax: 0,
+      total: 0,
+      closedAt: null,
     }
+
+    const sale = await Sale.create(newSale);
+    console.log("New sale initiated:", sale);
+
+    return { success: true, message: "new sale initiated", data: sale };
+  } catch (err) {
+    console.error("initiateSale error:", err);
+    throw err
+  }
+}
+
+
+export const fetchAllSaleTransactions = async () => {
+  try {
+    const saleTransactions = await Sale.find()
+
+
+    console.log(saleTransactions)
+    return { success: true, message: "all sales fetched successFully", data: saleTransactions }
+
+  } catch (err) {
+    console.error("fetch All Sale error: ", err)
+    throw err
+  }
 }
 
 export const fetchSaleTransaction = async (saleId) => {
-    try {
-        const sale = await Sale.findById(saleId);
+  try {
+    console.log(saleId)
+    const sale = await Sale.findById(saleId);
 
-        if (!sale) {
-            return { success: false, message: "Sale transaction not found" };
-        }
-        
-        console.log(`sale with the _id: ${sale._id} Fetched`)
-        return { success: true, message: "Sale transaction fetched successfully", data: sale };
-
-    } catch (err) {
-        console.error("fetchSaleTransaction error:", err);
-        throw err
+    if (!sale) {
+      return { success: false, message: "Sale transaction not found" };
     }
+
+    console.log(`sale with the _id: ${sale._id} Fetched`)
+    return { success: true, message: "Sale transaction fetched successfully", data: sale };
+
+  } catch (err) {
+    console.error("fetchSaleTransaction error:", err);
+    throw err
+  }
 }
 
 
@@ -47,7 +63,7 @@ export const fetchSaleTransaction = async (saleId) => {
 export const addItemToSaleTransaction = async (saleId, sku) => {
   try {
     //console.log("product sku: ", sku )
-    const product = await Product.findOne({ sku: sku})
+    const product = await Product.findOne({ sku: sku })
 
     if (!product || product.stockQuantity <= 0) {
       console.log("Product not available in stuck")

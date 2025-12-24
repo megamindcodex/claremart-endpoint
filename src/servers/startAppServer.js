@@ -1,11 +1,14 @@
 import express from 'express';
 import connectdb from "../db/connectdb.js";
+import { corsConfig } from '../config/corsConfig.js';
 import productRoutes from "../app/routes/product.routes.js";
 import saleRoutes from "../app/routes/sale.routes.js";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
+
+app.use(corsConfig())
 
 app.use(express.json())
 
@@ -16,14 +19,14 @@ app.use("/product", productRoutes);
 app.use("/sale", saleRoutes);
 
 app.get("/", (req, res) => {
-  res.send("claremart API endpoint is live")
+    res.send("claremart API endpoint is live")
 })
 
 const startAppServer = async () => {
     try {
         await connectdb();
-        
-        
+
+
 
         app.listen(PORT, () => {
             console.log(`App server is listening on port ${PORT} at http://localhost:${PORT}`);
