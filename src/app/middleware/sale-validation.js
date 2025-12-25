@@ -1,6 +1,7 @@
 
 export const fetchSaleTransaction_validation = (req, res, next) => {
     const { saleId } = req.params;
+    console.log(req.params)
 
     if (!saleId) {
         return res.status(400).json({ message: "missing saleId parameter" });

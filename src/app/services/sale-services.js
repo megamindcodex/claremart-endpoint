@@ -88,6 +88,11 @@ export const addItemToSaleTransaction = async (saleId, sku) => {
       { new: true }
     )
 
+    if (sale) {
+      console.log("item quantity incremented successfully")
+      return { success: true, message: "Item quantity incremented sucessfully" }
+    }
+
     // If item does not exist, push new item
     if (!sale) {
       const newSaleItem = {

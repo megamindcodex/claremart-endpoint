@@ -25,6 +25,7 @@ export const fetchAllSaleTransactions_controller = async (req, res) => {
     const result = await fetchAllSaleTransactions()
 
     res.status(200).json({ message: result.message, sales: result.data })
+
   } catch (err) {
     console.error("fetch all sales transactions controller error: ", err)
     const status = err.statusCode || 500
@@ -38,6 +39,9 @@ export const fetchAllSaleTransactions_controller = async (req, res) => {
 export const fetchSaleTransaction_controller = async (req, res) => {
   try {
     const { saleId } = req.params
+    console.log(saleId)
+
+
 
     const result = await fetchSaleTransaction(saleId)
 
@@ -56,6 +60,8 @@ export const addItemToSaleTransaction_controller = async (req, res) => {
   try {
     const { saleId } = req.params
     const { sku } = req.body
+
+
     const result =
       await addItemToSaleTransaction(saleId, sku)
 
@@ -94,6 +100,10 @@ export const removeItemFromSale_controller = async (req, res) => {
   try {
     const { saleId } = req.params
     const { sku } = req.body
+
+    if (!sku) {
+      console.log(`sku parameter is ${sku}`)
+    }
 
     const result = await removeItemFromSale(saleId, sku)
 
