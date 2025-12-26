@@ -2,7 +2,7 @@ import express from 'express';
 
 import { fetchSaleTransaction_validation, addItemToSale_validation } from "../middleware/sale-validation.js";
 
-import { initiateSale_controller, fetchSaleTransaction_controller, fetchAllSaleTransactions_controller, addItemToSaleTransaction_controller, decrementItemFromSale_controller, removeItemFromSale_controller, clearSaleItems_controller } from "../controllers/sale.controllers.js";
+import { initiateSale_controller, fetchSaleTransaction_controller, fetchAllSaleTransactions_controller, addItemToSaleTransaction_controller, decrementItemFromSale_controller, removeItemFromSale_controller, clearSaleItems_controller, updateSaleStatus_controller } from "../controllers/sale.controllers.js";
 
 
 const router = express.Router();
@@ -15,5 +15,6 @@ router.post("/sale-transaction/add-item/:saleId", addItemToSale_validation, addI
 router.put("/sale-transaction/clear-items/:saleId", clearSaleItems_controller)
 router.put("/sale-transaction/decrement-item/:saleId", decrementItemFromSale_controller)
 router.put("/sale-transaction/remove-item/:saleId", removeItemFromSale_controller)
+router.put("/sale-transaction/update-sale-status/:saleId", updateSaleStatus_controller)
 
 export default router;

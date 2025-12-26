@@ -246,3 +246,30 @@ export const clearSaleItems = async (saleId) => {
     throw err
   }
 }
+
+
+export const updateSaleStatus = async (saleId, status) => {
+  try {
+    const result = await Sale.findOneAndUpdate(
+      { _id: saleId, status: "OPEN" },
+      {
+        $set: { status: status }
+      }
+    )
+
+    if (result.matchedCount === 0) {
+      return {
+        success: false,
+        message: "Open sale transaction not found"
+      }
+    }
+
+    return {
+      success: true,
+      message: `sale transaction cancl ${status}`
+    }
+  } catch (err) {
+    console.error("cancleSaleTransaction error", err)
+    throw err
+  }
+}

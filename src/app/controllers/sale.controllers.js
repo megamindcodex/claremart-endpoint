@@ -1,4 +1,4 @@
-import { initiateSale, fetchSaleTransaction, fetchAllSaleTransactions, addItemToSaleTransaction, decrementItemFromSale, removeItemFromSale, clearSaleItems } from "../services/sale-services.js";
+import { initiateSale, fetchSaleTransaction, fetchAllSaleTransactions, addItemToSaleTransaction, decrementItemFromSale, removeItemFromSale, clearSaleItems, updateSaleStatus } from "../services/sale-services.js";
 
 
 
@@ -103,6 +103,7 @@ export const removeItemFromSale_controller = async (req, res) => {
 
     if (!sku) {
       console.log(`sku parameter is ${sku}`)
+      return res.status(400).json({ message: `sku parameter is ${sku}` })
     }
 
     const result = await removeItemFromSale(saleId, sku)
@@ -129,6 +130,34 @@ export const clearSaleItems_controller = async (req, res) => {
     res.status(200).json({ message: result.message })
   } catch (err) {
     console.error("clear sale items controller error: ", err)
+    const status = err.statusCode || 500
+    const message = status === 500 ? "Internal server error" : err.message
+    res.status(status).json({ message })
+  }
+}
+
+
+export const updateSaleStatus_controller = async (req, res) => {
+  try {
+    const { saleId } = req.params
+    const { status } = req.body
+
+    console.log("saleId: ", saleId)
+
+    if (!saleId) {
+      console.log(`saleId parameter is ${saleId}`)
+      return res.status(400).json({ message: `saleId parameter is ${saleId}` })
+    }
+    if (!status) {
+      console.log(`status parameter is ${status}`)
+      return res.status(400).json({ message: `status parameter is ${status}` })
+    }
+
+
+    const result = await updateSaleStatus(saleId, status)
+    res.status(200).json({ message: result.message })
+  } catch (err) {
+    console.error("cancleSaleTransaction_controller error: ", err)
     const status = err.statusCode || 500
     const message = status === 500 ? "Internal server error" : err.message
     res.status(status).json({ message })

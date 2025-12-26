@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 const saleItemSchema = new mongoose.Schema({
     productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
     name: { type: String, required: true },
-    sku: { type: String, required: true},
+    sku: { type: String, required: true },
     unitPrice: { type: Number, required: true, min: 0 },
     quantity: { type: Number, required: true, default: 1, min: 1 },
     lineTotal: { type: Number, required: true, min: 0 },
 }, { _id: false }); // Disable _id for subdocument schema
 
 const saleSchema = new mongoose.Schema({
-    status: { type: String, enum: ["OPEN", "CLOSED", "CANCELLED"], default: "OPEN" },
+    status: { type: String, enum: ["OPEN", "CLOSED", "CANCELED"], default: "OPEN" },
     items: { type: [saleItemSchema], default: [] },
     subtotal: { type: Number, required: true, default: 0, },
     tax: { type: Number, required: true, default: 0.45, },
