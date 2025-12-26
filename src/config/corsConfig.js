@@ -3,8 +3,9 @@ import cors from "cors";
 export const corsConfig = () => {
     const allowedOrigins = [
         "http://localhost:3000",
-        "http://localhost:5173",
-        "https://claremart-checkout.netlify.app"
+        "http://localhost:5173", ,
+        "https://claremart-checkout.netlify.app",
+        "https://claremart-client.vercel.app"
     ];
 
     const corsOptions = {
