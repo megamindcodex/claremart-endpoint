@@ -31,7 +31,7 @@ export const fetchAllSaleTransactions = async () => {
     const saleTransactions = await Sale.find()
 
 
-    console.log(saleTransactions)
+    // console.log(saleTransactions)
     return { success: true, message: "all sales fetched successFully", data: saleTransactions }
 
   } catch (err) {
@@ -49,7 +49,7 @@ export const fetchSaleTransaction = async (saleId) => {
       return { success: false, message: "Sale transaction not found" };
     }
 
-    console.log(`sale with the _id: ${sale._id} Fetched`)
+    // console.log(`sale with the _id: ${sale._id} Fetched`)
     return { success: true, message: "Sale transaction fetched successfully", data: sale };
 
   } catch (err) {
@@ -142,13 +142,13 @@ export const decrementItemFromSale = async (saleId, sku) => {
     const item = sale.items[0]
 
     if (item.quantity > 1) {
-      await Sale.updateOne(
+      await Sale.findOneAndUpdate(
         { _id: saleId, status: "OPEN", "items.sku": sku },
         {
           $inc: {
             "items.$.quantity": -1,
             "items.$.lineTotal": -item.unitPrice,
-            subTotal: -item.unitPrice
+            subtotal: - item.unitPrice
           }
         }
       )
@@ -157,7 +157,7 @@ export const decrementItemFromSale = async (saleId, sku) => {
         { _id: saleId, status: "OPEN" },
         {
           $pull: { items: { sku } },
-          $inc: { subTotal: -item.lineTotal }
+          $inc: { subtotal: -item.lineTotal }
         }
       )
     }
@@ -198,7 +198,7 @@ export const removeItemFromSale = async (saleId, sku) => {
       { _id: saleId, status: "OPEN" },
       {
         $pull: { items: { sku } },
-        $inc: { subTotal: -item.lineTotal }
+        $inc: { subtotal: -item.lineTotal },
       }
     )
 
@@ -222,7 +222,7 @@ export const clearSaleItems = async (saleId) => {
       {
         $set: {
           items: [],
-          subTotal: 0,
+          subtotal: 0,
           tax: 0,
           total: 0
         }
@@ -266,7 +266,7 @@ export const updateSaleStatus = async (saleId, status) => {
 
     return {
       success: true,
-      message: `sale transaction cancl ${status}`
+      message: `sale transaction updated ${status}`
     }
   } catch (err) {
     console.error("cancleSaleTransaction error", err)
